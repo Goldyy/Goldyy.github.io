@@ -1,281 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lukas Goldschmidt — Projects</title>
-  <meta name="description" content="Projects by Lukas Goldschmidt (Goldyy)." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,3 93,27 93,73 50,97 7,73 7,27' fill='%234f7d5b'/%3E%3C/svg%3E" />
-  <style>
-    :root {
-      --bg: #fbfbfa;
-      --surface: #ffffff;
-      --text: #1a1a19;
-      --muted: #6b6b66;
-      --faint: #9a9a94;
-      --border: #e7e6e2;
-      --accent: #3f7d5a;
-      --accent-soft: #eef4ef;
-      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
-      --shadow-hover: 0 2px 4px rgba(0,0,0,.05), 0 18px 44px rgba(0,0,0,.10);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #111312;
-        --surface: #1a1d1b;
-        --text: #ecebe7;
-        --muted: #a3a39c;
-        --faint: #6f6f68;
-        --border: #2a2e2b;
-        --accent: #6fbf8f;
-        --accent-soft: #1c2620;
-        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
-        --shadow-hover: 0 2px 4px rgba(0,0,0,.35), 0 18px 44px rgba(0,0,0,.5);
+  <meta name="description" content="Selected work by Lukas Goldschmidt (Goldyy) — tools, generative toys, and experiments." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,4 91,27 91,73 50,96 9,73 9,27' fill='%2317171a'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet" />
+
+  <!-- Set theme before paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark'
+                         : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
       }
-    }
+    })();
+  </script>
 
+  <style>
     * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+    html, body { margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f6f5f2; --fg: #17171a; --muted: #6f6f74; --faint: #9a9a9e;
+      --line: #e2e0da; --card: #fffefb; --tag-bg: #edece7; --hover: #efeee9;
+    }
+    :root[data-theme="dark"] {
+      --bg: #100f0e; --fg: #eceae4; --muted: #8f8d86; --faint: #66645f;
+      --line: #262421; --card: #171614; --tag-bg: #211f1c; --hover: #1c1a17;
     }
 
-    .wrap {
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
+      transition: background .35s ease, color .35s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: var(--fg); color: var(--bg); }
+
+    .container {
       max-width: 940px;
       margin: 0 auto;
-      padding: clamp(3.5rem, 9vw, 7rem) clamp(1.25rem, 5vw, 2rem) 4rem;
+      padding: clamp(48px, 8vw, 96px) clamp(24px, 5vw, 48px) 120px;
     }
 
     /* ---- Header ---- */
-    header { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 8px;
+    }
+    .head-left { max-width: 620px; }
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      font-size: .78rem;
-      letter-spacing: .14em;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.4rem;
+      color: var(--faint);
+      margin-bottom: 18px;
     }
-    .eyebrow svg { width: 16px; height: 16px; display: block; }
     h1 {
-      font-size: clamp(2.1rem, 6vw, 3.15rem);
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      font-weight: 680;
-      margin: 0 0 .9rem;
+      font-family: 'Newsreader', serif;
+      font-weight: 500;
+      font-size: clamp(34px, 6vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      margin: 0 0 16px;
     }
-    .intro {
-      font-size: clamp(1.02rem, 2.4vw, 1.18rem);
+    .tagline {
+      font-size: 16px;
+      line-height: 1.6;
       color: var(--muted);
-      max-width: 34rem;
+      margin: 0;
+      max-width: 52ch;
+    }
+    .head-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+    .head-links a {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: border-color .2s ease;
+    }
+    .head-links a:hover { border-bottom-color: var(--fg); }
+
+    .theme-toggle {
+      flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--fg);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 16px;
+      cursor: pointer;
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .theme-toggle:hover { background: var(--hover); }
+
+    /* ---- Project list ---- */
+    .project {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: clamp(24px, 5vw, 56px);
+      align-items: start;
+      padding: 44px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .project-main { min-width: 0; }
+    .project-title {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .project-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--faint);
+    }
+    h2 {
+      font-family: 'Newsreader', serif;
+      font-weight: 500;
+      font-size: 27px;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
       margin: 0;
     }
-    .intro a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
-    .intro a:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ---- Section label ---- */
-    .section-label {
-      font-size: .78rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--faint);
-      margin: 0 0 1.25rem;
-      padding-bottom: .75rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ---- Project grid ---- */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: clamp(1.25rem, 3vw, 1.75rem);
-    }
-
-    .card {
-      display: flex;
-      flex-direction: column;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-hover);
-      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-    }
-
-    .thumb {
-      position: relative;
-      aspect-ratio: 16 / 10;
-      background:
-        radial-gradient(120% 120% at 70% 20%, var(--accent-soft), transparent 60%),
-        var(--bg);
-      overflow: hidden;
-    }
-    .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .thumb .placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--faint);
-      font-size: .85rem;
-    }
-    .thumb .placeholder svg { width: 44%; height: auto; opacity: .5; }
-
-    .card-body {
-      padding: 1.4rem 1.5rem 1.6rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .card h2 {
-      font-size: 1.28rem;
-      letter-spacing: -0.01em;
-      margin: 0 0 .55rem;
-      font-weight: 640;
-    }
-    .card p {
-      margin: 0 0 1.1rem;
+    .project-desc {
+      font-size: 15.5px;
+      line-height: 1.65;
       color: var(--muted);
-      font-size: .96rem;
+      margin: 0 0 20px;
+      max-width: 46ch;
     }
-
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: .45rem;
-      margin: 0 0 1.4rem;
+      gap: 8px;
     }
     .tag {
-      font-size: .74rem;
-      letter-spacing: .02em;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.03em;
       color: var(--muted);
-      background: var(--accent-soft);
-      border: 1px solid var(--border);
-      padding: .2rem .6rem;
-      border-radius: 999px;
+      background: var(--tag-bg);
+      border-radius: 5px;
+      padding: 5px 9px;
     }
 
-    .links {
+    .project-aside {
       display: flex;
-      gap: .6rem;
-      margin-top: auto;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 12px;
     }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      font-size: .9rem;
-      font-weight: 550;
+    .project-aside img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--line);
+    }
+    .aside-links {
+      display: flex;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+    .link-live {
+      color: var(--fg);
       text-decoration: none;
-      padding: .5rem .95rem;
-      border-radius: 9px;
-      transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+      border-bottom: 1px solid var(--fg);
+      padding-bottom: 2px;
+      transition: opacity .2s ease;
     }
-    .btn:active { transform: translateY(1px); }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
+    .link-live:hover { opacity: 0.6; }
+    .link-source {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: color .2s ease;
     }
-    .btn-primary:hover { background: color-mix(in srgb, var(--accent) 88%, #000); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .btn svg { width: 15px; height: 15px; }
+    .link-source:hover { color: var(--fg); }
 
     /* ---- Footer ---- */
     footer {
-      margin-top: clamp(3rem, 8vw, 5rem);
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+      margin-top: 56px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--faint);
       display: flex;
       justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
-      color: var(--faint);
-      font-size: .88rem;
+      gap: 12px;
     }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--accent); }
+
+    /* ---- Responsive: collapse the two-column rows ---- */
+    @media (max-width: 640px) {
+      .project {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .project-aside { order: 2; }
+      header { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="container">
+
     <header>
-      <span class="eyebrow">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,4 91,27 91,73 50,96 9,73 9,27" fill="none" stroke="currentColor" stroke-width="7"/></svg>
-        Lukas Goldschmidt · Goldyy
-      </span>
-      <h1>Things I build.</h1>
-      <p class="intro">A small collection of projects. Mostly things I made because I wanted them to exist. Find more on <a href="https://github.com/Goldyy" rel="noopener">GitHub</a>.</p>
+      <div class="head-left">
+        <div class="eyebrow">Selected work · 2026</div>
+        <h1>Things I'm building</h1>
+        <p class="tagline">A running list of projects and experiments — tools, generative toys, and half-finished ideas. Live demos and source below.</p>
+        <div class="head-links">
+          <a href="https://github.com/Goldyy" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Toggle color theme" onclick="toggleTheme()">
+        <span id="theme-label">☀ Light</span>
+      </button>
     </header>
 
     <main>
-      <p class="section-label">Projects</p>
-      <div class="grid">
 
-        <article class="card">
-          <div class="thumb">
-            <!-- Swap the src below for a new screenshot: assets/hexagon-map-tiles.jpg -->
-            <img src="assets/hexagon-map-tiles.jpg" alt="A 3D city tile generated by Hexagon Map Tiles, showing skyscrapers, a park and roads." loading="lazy"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="placeholder" style="display:none;">
-              <svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,6 89,28 89,72 50,94 11,72 11,28" fill="none" stroke="currentColor" stroke-width="4"/></svg>
-            </div>
-          </div>
-          <div class="card-body">
+      <article class="project">
+        <div class="project-main">
+          <div class="project-title">
+            <span class="project-num">01</span>
             <h2>Hexagon Map Tiles</h2>
-            <p>Turn any address or lat/lon into a clipped, hexagonal 3D city tile — buildings, roads, water, greenery and trees pulled live from OpenStreetMap, previewed in the browser and exportable as a GLB. Everything runs client-side; no backend.</p>
-            <div class="tags">
-              <span class="tag">Three.js</span>
-              <span class="tag">TypeScript</span>
-              <span class="tag">Vite</span>
-              <span class="tag">OpenStreetMap</span>
-              <span class="tag">GLB export</span>
-            </div>
-            <div class="links">
-              <a class="btn btn-primary" href="https://goldyy.github.io/hexagon-map-tiles/" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-                Live demo
-              </a>
-              <a class="btn btn-ghost" href="https://github.com/Goldyy/hexagon-map-tiles" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
-                Source
-              </a>
-            </div>
           </div>
-        </article>
+          <p class="project-desc">Turn any address or lat/lon into a clipped, hexagonal 3D city tile — buildings, roads, water, greenery and trees pulled live from OpenStreetMap, previewed in the browser and exportable as a GLB. Everything runs client-side; no backend.</p>
+          <div class="tags">
+            <span class="tag">Three.js</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Vite</span>
+            <span class="tag">OpenStreetMap</span>
+            <span class="tag">GLB export</span>
+          </div>
+        </div>
+        <div class="project-aside">
+          <img src="assets/hexagon-map-tiles.jpg" alt="A 3D city tile generated by Hexagon Map Tiles, showing skyscrapers, a park and roads." loading="lazy" />
+          <div class="aside-links">
+            <a class="link-live" href="https://goldyy.github.io/hexagon-map-tiles/" target="_blank" rel="noopener">Live demo ↗</a>
+            <a class="link-source" href="https://github.com/Goldyy/hexagon-map-tiles" target="_blank" rel="noopener">Source ↗</a>
+          </div>
+        </div>
+      </article>
 
-      </div>
     </main>
 
     <footer>
-      <span>© Lukas Goldschmidt</span>
-      <a href="https://github.com/Goldyy" rel="noopener">github.com/Goldyy</a>
+      <span>Built with care · updated Jul 2026</span>
+      <span>01 projects</span>
     </footer>
   </div>
+
+  <script>
+    function applyLabel() {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.getElementById('theme-label').textContent = dark ? '☾ Dark' : '☀ Light';
+    }
+    function toggleTheme() {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var next = dark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      applyLabel();
+    }
+    applyLabel();
+  </script>
 </body>
 </html>
